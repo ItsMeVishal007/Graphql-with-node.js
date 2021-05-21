@@ -1,21 +1,14 @@
 const express = require('express');
-const graphql = require('graphql');
-const { graphqlHTTP } = require('express-graphql')
-var { buildSchema } = require('graphql');
+const { ApolloServer, gql } = require('apollo-server-express');
+const typeDefs = require('./libs/typeDefs')
+const resolvers = require('./libs/resolvers')
 
 
-const hostname = '127.0.0.1';
-const port = 4000;
+const server = new ApolloServer({ typeDefs, resolvers });
+
 const app = express();
+server.applyMiddleware({ app });
 
-const schema = buildSchema(``)
-
-
-app.use('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true
-}))
-
-app.listen(port, hostname, () => {
-  console.log(`The server is running at http://${hostname}:${port}`)
-})
+app.listen({ port: 4000 }, () =>
+  console.log('Now browse to http://localhost:4000' + server.graphqlPath)
+);
