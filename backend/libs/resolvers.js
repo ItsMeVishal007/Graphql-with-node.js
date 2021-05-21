@@ -1,8 +1,9 @@
 const { ApolloServer, gql } = require('apollo-server-express');
+const users = require('./users')
 
 const resolvers = {
   Query: {
-    name: () => 'Vishal kumar',
+    users: () => users,
   },
 };
 
